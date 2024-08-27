@@ -1,0 +1,20 @@
+stages:
+    - build
+    - deploy
+Lambda_Build:
+    stage: build
+    tags:
+        - CI
+        - Devops
+    script:
+        - zip -r my-lambda-package_$CI_PIPELINE_IID.zip lambda_function.py
+        - ls
+        - aws s3 cp my-lambda-package_$CI_PIPELINE_IID.zip s3://lex-package-builds-chatbot/
+Lambda_Deploy:
+    stage: deploy
+    tags:
+        - CI
+        - Devops
+    when: manual
+    script:
+        - aws lambda update-function-code --function-name AutoPilot-Lambda --region us-east-1 --s3-bucket lex-package-builds-chatbot --s3-key my-lambda-package_$CI_PIPELINE_IID.zip
