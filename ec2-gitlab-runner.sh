@@ -4,7 +4,7 @@
 REGION="us-east-1"
 INSTANCE_TYPE="t2.micro"
 AMI_ID="ami-066784287e358dad1"  # Amazon Linux 2 AMI ID for us-east-1
-KEY_NAME="my-ec2-key"  # Replace with your desired key pair name
+KEY_NAME="my-ec2-key-1"  # Replace with your desired key pair name
 SECURITY_GROUP_NAME="gitlab-runner-sg"
 TAG="cicd"
 
