@@ -60,15 +60,22 @@ sudo yum update -y
 
 # Install Git
 sudo yum install -y git
+# Download the binary for your system
+sudo curl -L --output /usr/local/bin/gitlab-runner https://gitlab-runner-downloads.s3.amazonaws.com/latest/binaries/gitlab-runner-linux-amd64
 
-# Add GitLab Runner repository
-curl -L --output /etc/yum.repos.d/gitlab-runner.repo https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.rpm.sh
+# Give it permission to execute
+sudo chmod +x /usr/local/bin/gitlab-runner
 
-# Install GitLab Runner
-sudo yum install gitlab-runner -y
+# Create a GitLab Runner user
+sudo useradd --comment 'GitLab Runner' --create-home gitlab-runner --shell /bin/bash
 
-# Register the runner (You'll need to replace these values with your GitLab details)
-# sudo gitlab-runner register --non-interactive --url "https://gitlab.com/" --registration-token "glrt-HARxg6bzjhzAfZNo91Df" --executor "shell" --description "GitLab Runner" --tag-list "cicd" --run-untagged="true" --locked="false"
+# Install and run as a service
+sudo gitlab-runner install --user=gitlab-runner --working-directory=/home/gitlab-runner
+sudo gitlab-runner start
+
+gitlab-runner register  --url https://gitlab.com  --token glrt-uqb5bJKPzHWgZu8xtGzv
+
+gitlab-runner run
 
 # Start the runner
 sudo systemctl enable gitlab-runner
